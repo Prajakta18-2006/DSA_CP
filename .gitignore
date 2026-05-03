@@ -1,0 +1,14 @@
+# Compiled Binaries
+*.exe
+*.o
+*.obj
+
+# Data and Logs
+data/
+*.txt
+
+# IDE/System files
+.vs/
+.vscode/
+.DS_Store
+Thumbs.db

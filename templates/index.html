@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Library - Web Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">📚 SmartLib</div>
+        <nav>
+            <a href="#dashboard" class="active">Dashboard</a>
+            <a href="#issue-section">Issue Queue</a>
+            <a href="#return-section">Return History</a>
+            <a href="#recommend-section">Recommendations</a>
+        </nav>
+        <div class="stats" id="quick-stats">
+            <!-- Stats will be populated here -->
+        </div>
+    </div>
+
+    <main class="content">
+        <header>
+            <h1>Library Management System</h1>
+            <div class="search-bar">
+                <input type="text" id="global-search" placeholder="Search books by name...">
+                <button onclick="searchBooks()">Search</button>
+            </div>
+        </header>
+
+        <section id="dashboard" class="card">
+            <div class="card-header">
+                <h2>All Books (AVL Sorted)</h2>
+                <button class="btn-primary" onclick="showAddModal()">+ Add Book</button>
+            </div>
+            <div class="table-container">
+                <table id="books-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Genre</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="books-list">
+                        <!-- Loaded via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="grid-2">
+            <section id="issue-section" class="card">
+                <h2>Issue Queue (FIFO)</h2>
+                <div class="issue-actions">
+                    <button class="btn-secondary" onclick="processIssue()">Process Next</button>
+                </div>
+                <div id="queue-list" class="mini-list">
+                    <!-- Loaded via JS -->
+                </div>
+            </section>
+
+            <section id="return-section" class="card">
+                <h2>Return History (LIFO)</h2>
+                <div id="history-list" class="mini-list">
+                    <!-- Loaded via JS -->
+                </div>
+            </section>
+        </div>
+
+        <section id="recommend-section" class="card">
+            <div class="card-header">
+                <h2>Book Recommendations (Graph)</h2>
+                <div class="header-actions">
+                    <button class="btn-secondary" style="font-size: 12px;" onclick="showAddRecModal()">+ Add Relationship</button>
+                </div>
+            </div>
+            <div class="rec-input">
+                <input type="number" id="rec-id" placeholder="Enter Book ID to see related books...">
+                <button onclick="getRecommendations()">Get Recommendations</button>
+            </div>
+            <div id="recommendations-list" class="rec-grid">
+                <!-- Loaded via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <div id="add-modal" class="modal">
+        <div class="modal-content">
+            <h3>Add New Book</h3>
+            <input type="number" id="add-id" placeholder="ID (optional)">
+            <input type="text" id="add-title" placeholder="Title">
+            <input type="text" id="add-author" placeholder="Author">
+            <input type="text" id="add-genre" placeholder="Genre">
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="addBook()">Save Book</button>
+                <button class="btn-secondary" onclick="hideAddModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-rec-modal" class="modal">
+        <div class="modal-content">
+            <h3>Add Book Relationship</h3>
+            <p style="font-size: 12px; color: var(--text-light); margin-bottom: 10px;">Link two books together so they recommend each other.</p>
+            <input type="number" id="rec-book-a" placeholder="First Book ID">
+            <input type="number" id="rec-book-b" placeholder="Second Book ID">
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="addRecommendation()">Create Link</button>
+                <button class="btn-secondary" onclick="hideAddRecModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <h3>Edit Book Details</h3>
+            <input type="hidden" id="edit-id">
+            <label style="font-size: 12px; display: block; margin-top: 10px;">Title</label>
+            <input type="text" id="edit-title">
+            <label style="font-size: 12px; display: block; margin-top: 10px;">Author</label>
+            <input type="text" id="edit-author">
+            <label style="font-size: 12px; display: block; margin-top: 10px;">Genre</label>
+            <input type="text" id="edit-genre">
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="updateBook()">Update Book</button>
+                <button class="btn-secondary" onclick="hideEditModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="/script.js"></script>
+</body>
+</html>
